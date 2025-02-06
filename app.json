@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "FoodRxCheck",
+    "slug": "foodrugcheck",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/apdative_icon.png",
+    "scheme": "foodrugcheck",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/apdative_icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.cyanide1234.foodrugcheck",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "foodrugcheck",
+              "host": "CaptureReset"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./src/assets/images/drugSpecs.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/drugSpecs.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "91aa4ef5-e931-4db4-878e-7353ef33c734"
+      }
+    },
+    "owner": "cyanide1234"
+  }
+}
