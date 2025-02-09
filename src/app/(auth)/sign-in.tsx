@@ -1,5 +1,5 @@
 import { View, Text,Alert,AppState, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import supabase from '../lib/supabase';
+import supabase from '../../lib/supabase';
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Colors from '../../constant/Colors';

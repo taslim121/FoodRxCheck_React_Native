@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
-import supabase from '../app/lib/supabase';
+import supabase from '../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import { Alert } from 'react-native';
 

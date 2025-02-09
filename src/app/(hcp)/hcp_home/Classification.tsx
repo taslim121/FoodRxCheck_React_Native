@@ -1,7 +1,7 @@
 // screens/ClassList.tsx
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import supabase from '../../lib/supabase';
+import supabase from '../../../lib/supabase';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 

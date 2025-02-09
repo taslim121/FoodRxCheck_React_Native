@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import supabase from '../app/lib/supabase';
+import supabase from '../lib/supabase';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useQuery } from '@tanstack/react-query';
 import parseAndRenderText from '../utils/parsehttp';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Modal, FlatList } from 'react-native';
-import supabase from '../../app/lib/supabase';
+import supabase from '../../lib/supabase';
 import { useAuth } from '../../provider/AuthProvider';
 import { FontAwesome } from '@expo/vector-icons';
 

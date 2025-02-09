@@ -2,7 +2,7 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { Redirect, Link, Stack } from "expo-router";
 import Button from "../components/Button";
 import { useAuth } from "../provider/AuthProvider";
-import supabase from "./lib/supabase";
+import supabase from "../lib/supabase";
 
 export default function Index() {
   const { session, loading,isAdmin,isHcp} = useAuth();

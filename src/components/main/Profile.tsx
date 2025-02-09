@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useAuth } from "../../provider/AuthProvider";
-import supabase from '../../app/lib/supabase';
+import supabase from '../../lib/supabase';
 
 const Profile = () => {
   const { user } = useAuth();

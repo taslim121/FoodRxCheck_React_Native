@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Stack, useRouter } from "expo-router";
-import supabase from "../lib/supabase";
+import supabase from "../../lib/supabase";
 import Button from "../../components/Button";
 
 const SignUpScreen = () => {

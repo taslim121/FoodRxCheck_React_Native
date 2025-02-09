@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams, Stack,Redirect } from 'expo-router';
-import supabase from '../../lib/supabase';
+import supabase from '../../../lib/supabase';
 import { Platform } from 'react-native';
 import SearchBar from '../../../components/Searchbar';
 import { useQuery } from '@tanstack/react-query';

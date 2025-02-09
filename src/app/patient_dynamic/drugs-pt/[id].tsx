@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, Image, Modal, Platform } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import supabase from '../../lib/supabase';
+import supabase from '../../../lib/supabase';
 import { useQuery } from '@tanstack/react-query';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -67,9 +67,9 @@ const DrugDetails: React.FC = () => {
             {item.image_path ? (
               <View>
                 <Text style={styles.cardsubTitle}>Image:</Text>
-                <TouchableOpacity onPress={() => openImageModal(fetchImageUrl(item.image_path))}>
+                <TouchableOpacity onPress={() => openImageModal(item.image_path)}>
                   <Image
-                    source={{ uri: fetchImageUrl(item.image_path) }}
+                    source={{ uri: item.image_path}}
                     style={styles.image}
                     
                   />

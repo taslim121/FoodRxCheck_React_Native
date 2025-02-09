@@ -5,7 +5,7 @@ type Product = {
   drug: string;
 };
 import { useRouter } from 'expo-router';
-import supabase from '../../lib/supabase';
+import supabase from '../../../lib/supabase';
 import { useEffect, useState } from 'react';
 import React from 'react'
 import SearchBar from '../../../components/Searchbar';
