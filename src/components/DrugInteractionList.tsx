@@ -45,44 +45,27 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
     setExpandedItems((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  // Include counselling tips only in patient_interactions
-  const dataWithCounsellingTips = tableName === 'patient_interactions' && drugDetails?.[0]?.food !== 'NA'
-    ? drugDetails && [
-        ...drugDetails,
-        { 
-          drug_id: id, 
-          food: '', 
-          counselling_tips: drugDetails[0]?.counselling_tips, 
-          isCounsellingTips: true 
-        },
-      ]
-    : drugDetails;
+  // Filter valid food interactions
+  const validDrugDetails = drugDetails?.filter(item => item.food !== 'NA') || [];
+  const hasValidInteractions = validDrugDetails.length > 0;
+
+  // Include counselling tips even when food interactions are 'NA'
+  const dataWithCounsellingTips = tableName === 'patient_interactions' && drugDetails?.[0]?.counselling_tips
+    ? [...validDrugDetails, { drug_id: id, food: 'No Food Drug Interaction Available', counselling_tips: drugDetails[0]?.counselling_tips, isCounsellingTips: true }]
+    : validDrugDetails;
 
   const renderInteractionItem = ({ item, index }: { item: Interaction; index: number }) => {
     const isExpanded = expandedItems[index];
 
     return (
       <View style={styles.card}>
-        {/* Handle food == "NA" separately for patient_interactions */}
-        {item.food === 'NA' ? (
+        {item.isCounsellingTips ? (
           <>
-            <Text style={styles.cardTitle}>No Drug Food Interaction Available</Text>
-            {tableName === 'patient_interactions' && item.counselling_tips && (
-              <View style={styles.expandedContent}>
-                <Text style={styles.bold}>Counselling Tips:</Text>
-                <Text style={styles.cardText}>{item.counselling_tips}</Text>
-              </View>
-            )}
-          </>
-        ) : item.isCounsellingTips ? (
-          <>
-            {/* Counselling Tips Section for patient_interactions */}
             <Text style={styles.bold}>Counselling Tips:</Text>
             <Text style={styles.cardText}>{item.counselling_tips}</Text>
           </>
         ) : (
           <>
-            {/* Food Interaction Header */}
             <TouchableOpacity style={styles.touch} onPress={() => toggleExpansion(index)}>
               <Text style={styles.cardTitle}>{item.food}</Text>
               <FontAwesome
@@ -93,7 +76,6 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
               />
             </TouchableOpacity>
 
-            {/* Collapsible Details */}
             {isExpanded && (
               <View style={styles.expandedContent}>
                 {item.mechanism_of_action && (
@@ -129,14 +111,25 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          title: 'Food Interaction',
+          headerTitle: () => (
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>
+                Food Drug Interaction
+              </Text>
+              <Text style={{ fontSize: 16, color: '#fff' }}>
+                {name}
+              </Text>
+            </View>
+          ),
           headerStyle: { backgroundColor: '#0a7ea4' },
           headerTintColor: '#fff',
         }}
       />
 
       <View style={styles.drugInfo}>
-        <Text style={styles.cardTitle}>Drug Name: {name}</Text>
+        <Text style={styles.cardTitle}>
+          {hasValidInteractions ? `${validDrugDetails.length} Food Interaction${validDrugDetails.length !== 1 ? 's' : ''}` : 'No Food Drug Interaction Available'}
+        </Text>
       </View>
 
       <FlatList
@@ -148,7 +141,6 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -172,11 +164,10 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowOffset: { width: 5, height: 5},
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
     elevation: 5,
-    borderWidth: 1,
     borderColor: '#000',
   },
   cardTitle: {

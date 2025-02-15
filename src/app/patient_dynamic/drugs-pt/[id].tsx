@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, Image, Modal, Platform } from 'react-native';
+import { View, Text, ActivityIndicator, FlatList, StyleSheet, TouchableOpacity, Image, Modal, ScrollView, Platform } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import supabase from '../../../lib/supabase';
 import { useQuery } from '@tanstack/react-query';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import ZoomableImage from '@/components/Image-view';
 
 type Product = {
   instructions: string;
   references: string;
   image_path: string;
-};
-
-const fetchImageUrl = (path: string) => {
-  return `https://gxrqpnlluwibbmqwkgha.supabase.co/storage/v1/object/public/direction_of_use_images/${path}`;
 };
 
 const DrugDetails: React.FC = () => {
@@ -68,13 +64,8 @@ const DrugDetails: React.FC = () => {
               <View>
                 <Text style={styles.cardsubTitle}>Image:</Text>
                 <TouchableOpacity onPress={() => openImageModal(item.image_path)}>
-                  <Image
-                    source={{ uri: item.image_path}}
-                    style={styles.image}
-                    
-                  />
-                    
-                    <Text style={{ color: '#aaa', textAlign: 'center', marginTop: 5 }}>Tap to view full image</Text>
+                  <Image source={{ uri: item.image_path }} style={styles.imageThumbnail} />
+                  <Text style={styles.tapText}>Tap to view full image</Text>
                 </TouchableOpacity>
               </View>
             ) : null}
@@ -87,19 +78,16 @@ const DrugDetails: React.FC = () => {
           </View>
         )}
       />
-      {/* Modal for Image Viewer */}
+
+      {/* Modal for Fullscreen Image */}
       {modalVisible && imageUrl && (
-        <Modal visible={modalVisible} transparent={true}>
-          <ImageViewer
-            imageUrls={[{ url: imageUrl }]}
-            enableSwipeDown={true}
-            onSwipeDown={closeImageModal}
-            renderHeader={() => (
-              <TouchableOpacity style={styles.closeButton} onPress={closeImageModal}>
-                <Text style={styles.closeButtonText}>✕</Text>
-              </TouchableOpacity>
-            )}
-          />
+        <Modal visible={modalVisible} transparent={true} animationType="slide">
+          <View style={styles.modalContainer}>
+            <ZoomableImage imageUrl={imageUrl} />
+            <TouchableOpacity onPress={closeImageModal} style={styles.closeButton}>
+              <Text style={styles.closeText}>✕</Text>
+            </TouchableOpacity>
+          </View>
         </Modal>
       )}
     </View>
@@ -156,26 +144,40 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: '#333',
   },
-  image: {
-    width: 270,
-    height: 200,
+  imageThumbnail: {
+    width: '80%',
+    height: 150,
     alignSelf: 'center',
-    marginBottom: 10,
+  },
+  tapText: {
+    textAlign: 'center',
+    color: '#555',
+    marginTop: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  fullImage: {
+    width: 300,
+    height: 400,
     resizeMode: 'contain',
-    borderRadius: 10,
   },
   closeButton: {
     position: 'absolute',
-    top: 20,
+    top: 40,
     right: 20,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     borderRadius: 20,
     padding: 10,
-    zIndex: 1000,
   },
-  closeButtonText: {
+  closeText: {
     fontSize: 18,
-    color: '#fff',
     fontWeight: 'bold',
   },
 });

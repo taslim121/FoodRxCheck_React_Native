@@ -11,6 +11,7 @@ interface DrugListProps {
     fetchNextPage: () => void;
     hasNextPage: boolean;
     isFetchingNextPage: boolean;
+    isLoading: boolean;
   };
   pushPath: string;
 }
@@ -26,7 +27,7 @@ interface Page {
 const DrugListComponent: React.FC<DrugListProps> = ({ filter, usePaginatedDrugs, pushPath }) => {
   const router = useRouter();
   const { selectedDrugs, onAddDrug, onRemoveDrug } = useDrugs();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = usePaginatedDrugs();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,isLoading } = usePaginatedDrugs();
 
 
   const drugs: Drug[] = data?.pages.flatMap((page: Page) => page.data) || [];
@@ -34,7 +35,9 @@ const DrugListComponent: React.FC<DrugListProps> = ({ filter, usePaginatedDrugs,
   const filteredDrugs = drugs.filter((drug) =>
     drug.drug_name.toLowerCase().includes(filter.toLowerCase())
   );
-
+  if (isLoading) {
+    return <ActivityIndicator style={styles.loadingContainer} size="large" color="#000" />;
+  }
   return (
     <View style={styles.container}>
       <FlatList
@@ -98,6 +101,11 @@ const styles = StyleSheet.create({
   drugName: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     elevation: 5,

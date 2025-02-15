@@ -55,6 +55,9 @@ const SelectedDrugs = () => {
                 }}
               >
                 <Text style={styles.drugName}>{item.drug_name}</Text>
+                <Text>
+                  
+                </Text>
               </TouchableOpacity>
               
               <TouchableOpacity style={{ width: '15%' }} onPress={() => onRemoveDrug(item.drug_id)}>
