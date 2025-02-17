@@ -89,7 +89,7 @@ const SelectedDrugs = () => {
                 <Text style={styles.interactionSummary}>
                   {interactionCount > 0
                     ? `${interactionCount} food interaction(s) found`
-                    : 'No known food interactions' + (!isHcp ? ' Get Couselling Tips' : '')}
+                    : 'No known food interactions' }
                 </Text>
 
                 {interactionCount > 0 ? (
@@ -109,7 +109,7 @@ const SelectedDrugs = () => {
                   </TouchableOpacity>)}
                   {interactionCount === 0 && !isHcp && (
                   <TouchableOpacity onPress={() => handleNavigate(drug)}>
-                    <Text style={styles.detailsButtonText}>More Details</Text>
+                    <Text style={styles.detailsButtonText}>Counselling Tips</Text>
                   </TouchableOpacity>)}
                   
                 </View>
