@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     bottom: 10, 
     left: 0, 
     right: 0, 
-    alignItems: 'flex-end' 
+    alignItems: 'center' 
   },
 });
 
