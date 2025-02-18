@@ -1,10 +1,12 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import { useAuth } from "../../provider/AuthProvider";
 import supabase from '../../lib/supabase';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Profile = () => {
   const { user } = useAuth();
+  const dropAnim = useRef(new Animated.Value(-200)).current;
 
   let qualificationData = null;
   try {
@@ -13,46 +15,46 @@ const Profile = () => {
     console.error("Error parsing qualification data:", error);
   }
 
+  useFocusEffect(
+    React.useCallback(() => {
+      dropAnim.setValue(-200); // Reset animation value
+      Animated.timing(dropAnim, {
+        toValue: 0,
+        duration: 800,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: false,
+      }).start();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Profile</Text>
-
-      {/* Profile Section */}
+      <Animated.View style={[styles.headerContainer, { top: dropAnim }]}>
+        <Text style={styles.header}>Profile</Text>
+      </Animated.View>
       <View style={styles.profileContainer}>
-        <Text style={styles.pic}>{user?.full_name?.charAt(0)}</Text>
-        <View>
-          <Text style={styles.welcomeText}>Welcome</Text>
-          <Text style={styles.nameText}>{user?.full_name}</Text>
+        <View style={styles.picContainer}>
+          <Text style={styles.pic}>{user?.full_name?.charAt(0)}</Text>
         </View>
+        <Text style={styles.nameText}>{user?.full_name}</Text>
+        <Text style={styles.roleText}>Healthcare Professional</Text>
+        {qualificationData && (
+          <View style={styles.qualificationContainer}>
+            <Text style={styles.qualificationHeader}>Qualification Details</Text>
+            <TouchableOpacity style={styles.menuItem} onPress={() => console.log('Sharing profile')}>
+          <Text style={styles.menuItemText}><Text style={styles.boldText}>Degree: </Text>{qualificationData.degree}</Text>
+        </TouchableOpacity><TouchableOpacity style={styles.menuItem} onPress={() => console.log('Sharing profile')}>
+          <Text style={styles.menuItemText}><Text style={styles.boldText}>Department: </Text>{qualificationData.department}</Text>
+        </TouchableOpacity><TouchableOpacity style={styles.menuItem} onPress={() => console.log('Sharing profile')}>
+          <Text style={styles.menuItemText}><Text style={styles.boldText}>Institution: </Text>{qualificationData.institution}</Text>
+        </TouchableOpacity>
+
+          </View>
+        )}
+        <TouchableOpacity style={styles.button} onPress={() => supabase.auth.signOut()}>
+          <Text style={styles.buttonText}>Sign Out</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* Role Section */}
-      <View style={styles.roleContainer}>
-        <Text style={styles.headerText}>
-          {user?.role === 'patient' ? 'Patient' : 'Healthcare Professional'}
-        </Text>
-      </View>
-
-      {/* Qualification Section */}
-      {qualificationData && (
-        <View style={styles.qualificationContainer}>
-          <Text style={styles.qualificationHeader}>Qualification Details</Text>
-          <Text style={styles.qualificationText}>
-            <Text style={styles.boldText}>Degree: </Text> {qualificationData.degree}
-          </Text>
-          <Text style={styles.qualificationText}>
-            <Text style={styles.boldText}>Department: </Text> {qualificationData.department}
-          </Text>
-          <Text style={styles.qualificationText}>
-            <Text style={styles.boldText}>Institution: </Text> {qualificationData.institution}
-          </Text>
-        </View>
-      )}
-
-      {/* Sign Out Button */}
-      <TouchableOpacity style={styles.button} onPress={() => supabase.auth.signOut()}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -60,90 +62,104 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    paddingTop: 30,
-    backgroundColor: '#f3f2ed',
-  },
-  profileContainer: {
-    flexDirection: 'row',
+    backgroundColor: '#f9f9f9',
     alignItems: 'center',
   },
-  button: {
+  headerContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: 200,
     backgroundColor: '#0a7ea4',
-    paddingVertical: 15,
-    borderRadius: 100,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  pic: {
-    width: 70,
-    height: 70,
-    fontSize: 50,
-    borderRadius: 35,
-    backgroundColor: '#0a7ea4',
-    color: '#fff',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginRight: 15,
-    elevation: 5,
-  },
-  welcomeText: {
-    fontSize: 16,
-    color: '#555',
-  },
-  nameText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  roleContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 30,
   },
   header: {
-    fontSize: 24,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  profileContainer: {
+    marginTop: 150,
+    backgroundColor: '#fff',
+    width: '90%',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    elevation: 5,
+  },
+  picContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#0a7ea4',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    marginBottom: 10,
+  },
+  pic: {
+    fontSize: 35,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  nameText: {
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: 'center',
   },
-  headerText: {
+  roleText: {
     fontSize: 18,
-    color: '#000',
+    color: '#0a7ea4',
     fontWeight: 'bold',
-    backgroundColor: '#e0e0e0',
-    padding: 10,
-    borderRadius: 5,
+    marginBottom: 10,
   },
   qualificationContainer: {
-    backgroundColor: '#ffffff',
     padding: 15,
     borderRadius: 10,
+    width: '100%',
+    marginBottom: 10,
+  },
+  qualificationHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  qualificationText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  menuItem: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+  },
+  menuItemText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: 'rgba(220, 90, 90, 0.85)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    width: '70%',
+    alignItems: 'center',
+    marginTop: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
-    marginTop: 10,
   },
-  qualificationHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#0a7ea4',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  qualificationText: {
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
-    color: '#333',
-    marginBottom: 5,
-  },
-  boldText: {
     fontWeight: 'bold',
   },
 });
