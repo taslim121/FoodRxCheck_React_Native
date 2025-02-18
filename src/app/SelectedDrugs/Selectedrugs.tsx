@@ -34,10 +34,10 @@ const fetchInteractions = async (selectedDrugs: { drug_id: number; drug_name: st
 const SelectedDrugs = () => {
   const { selectedDrugs, onRemoveDrug } = useDrugs();
   const router = useRouter();
-  const { isHcp } = useAuth();
-
+  const { isHcp,user } = useAuth();
+  const keyUser = user?.id || 'patient';
   const { data: interactionData, isLoading } = useQuery({
-    queryKey: ['interactions', selectedDrugs, isHcp],
+    queryKey: ['selectedinteractions',keyUser],
     queryFn: () => fetchInteractions(selectedDrugs, isHcp),
     enabled: selectedDrugs.length > 0, 
   });
@@ -231,15 +231,15 @@ const styles = StyleSheet.create({
   },
   clearButtonText: { 
     color: '#fff', 
-    fontSize: 16, 
+    fontSize: 14, 
     fontWeight: 'bold' 
   },
   clearButtonContainer: { 
     position: 'absolute', 
-    bottom: 20, 
+    bottom: 10, 
     left: 0, 
     right: 0, 
-    alignItems: 'center' 
+    alignItems: 'flex-end' 
   },
 });
 
