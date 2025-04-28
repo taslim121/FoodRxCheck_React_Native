@@ -117,7 +117,7 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
                 Food Drug Interaction
               </Text>
               <Text style={{ fontSize: 16, color: '#fff' }}>
-                {name}
+                {name || 'Drug name'}
               </Text>
             </View>
           ),
@@ -125,7 +125,7 @@ const DrugInteractionList: React.FC<DrugInteractionListProps> = ({ tableName }) 
           headerTintColor: '#fff',
         }}
       />
-
+     
       <View style={styles.drugInfo}>
         <Text style={styles.cardTitle}>
           {hasValidInteractions ? `${validDrugDetails.length} Food Interaction${validDrugDetails.length !== 1 ? 's' : ''}` : 'No Food Drug Interaction Available'}

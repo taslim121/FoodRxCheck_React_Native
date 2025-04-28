@@ -36,7 +36,6 @@ export default function RootLayout() {
       <QueryProvider>
           <DrugsProvider>
             <Stack>
-
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="(pt)" options={{ headerShown: false }} />
               <Stack.Screen name="(hcp)" options={{ headerShown: false }} />

@@ -4,7 +4,7 @@ import { useAuth } from "../provider/AuthProvider";
 
 
 export default function Index() {
-  const { session, loading,isAdmin,isHcp} = useAuth();
+  const { session, loading,isHcp} = useAuth();
   
   if (loading) {
     return <ActivityIndicator />;

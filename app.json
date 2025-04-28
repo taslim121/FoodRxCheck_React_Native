@@ -32,7 +32,10 @@
             "DEFAULT"
           ]
         }
-      ]
+      ],
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -62,6 +65,13 @@
         "projectId": "d72de6d8-11c6-4aa0-9551-8d589e9f6f93"
       }
     },
-    "owner": "cyanide1234"
+    "owner": "cyanide1234",
+    "updates": {
+      "enabled": true,
+      "url": "https://u.expo.dev/d72de6d8-11c6-4aa0-9551-8d589e9f6f93",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    }
+
   }
 }

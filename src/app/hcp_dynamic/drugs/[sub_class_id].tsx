@@ -52,7 +52,17 @@ const DrugList = () => {
       <Stack.Screen
         options={{
           headerTransparent: false,
-          title: `SubClass : ${subclassname}`,
+          //title: `SubClass : ${subclassname}`,
+          headerTitle: () => (
+                      <View>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#fff' }}>
+                          Sub Class
+                        </Text>
+                        <Text style={{ fontSize: 16, color: '#fff' }}>
+                          {subclassname}
+                        </Text>
+                      </View>
+                    ),
           headerStyle: { backgroundColor: '#0a7ea4' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontSize: 16 },
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,  // Ensure the FlatList container takes up the available space
-    paddingLeft: 10,
+  
   },
   loadingContainer: {
     flex: 1,
